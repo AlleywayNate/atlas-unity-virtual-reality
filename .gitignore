@@ -188,4 +188,6 @@ ExportedObj/
 *.unityproj
 
 *.booproj
+
+# added througn git desktop #
 /VR Setup with package manager
