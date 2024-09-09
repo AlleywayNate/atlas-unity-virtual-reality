@@ -2269,3 +2269,75 @@ Received Import Request.
 Start importing Assets/Scenes/1. Implement Teleportation Locomotion.unity using Guid(e756f886cb5c2f8479c388f2bbc7adac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b741f1ab39c273fdabbc3a58ffcaa487') in 0.000885 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 103.451043 seconds.
+  path: Assets/Scenes/0. VR Camera and Controller Configuration.unity
+  artifactKey: Guid(99c9720ab356a0642a771bea13969a05) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/0. VR Camera and Controller Configuration.unity using Guid(99c9720ab356a0642a771bea13969a05) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '741e835ced14396558779ce6f4be0ae5') in 0.000871 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 7.442862 seconds.
+  path: Assets/Scenes/0. VR Camera and Controller Configuration 1.unity
+  artifactKey: Guid(016cc1cc78019ad4aa2c248dd70690e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/0. VR Camera and Controller Configuration 1.unity using Guid(016cc1cc78019ad4aa2c248dd70690e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4ac7b4807dca363543e77ba93bdd4958') in 0.000725 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 7.375230 seconds.
+  path: Assets/Scenes/1. Implement Teleportation Locomotion.unity
+  artifactKey: Guid(e756f886cb5c2f8479c388f2bbc7adac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/1. Implement Teleportation Locomotion.unity using Guid(e756f886cb5c2f8479c388f2bbc7adac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1b9a38b8c22577bc4de7cb8ce4877be') in 0.000830 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 20.922596 seconds.
+  path: Assets/Scenes/1. Implement Teleportation Locomotion.unity
+  artifactKey: Guid(016cc1cc78019ad4aa2c248dd70690e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/1. Implement Teleportation Locomotion.unity using Guid(016cc1cc78019ad4aa2c248dd70690e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1cb4cb05f558c1921020375784738f0f') in 0.000862 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 56.395430 seconds.
+  path: Assets/Scenes/1. Implement Teleportation Locomotion.unity
+  artifactKey: Guid(016cc1cc78019ad4aa2c248dd70690e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/1. Implement Teleportation Locomotion.unity using Guid(016cc1cc78019ad4aa2c248dd70690e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '39166ed40102d29990abe8a522e2073b') in 0.000743 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 29.282095 seconds.
+  path: Assets/Scenes/1. Implement Teleportation Locomotion.unity
+  artifactKey: Guid(016cc1cc78019ad4aa2c248dd70690e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/1. Implement Teleportation Locomotion.unity using Guid(016cc1cc78019ad4aa2c248dd70690e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ed308f87fdb7ef7804322ac03b20cf35') in 0.000747 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 16.265441 seconds.
+  path: Assets/Scenes/0. VR Camera and Controller Configuration.unity
+  artifactKey: Guid(99c9720ab356a0642a771bea13969a05) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/0. VR Camera and Controller Configuration.unity using Guid(99c9720ab356a0642a771bea13969a05) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ca2a39026b73400a7dec5260bd79c8cc') in 0.000703 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 21.365062 seconds.
+  path: Assets/Scenes/0. VR Camera and Controller Configuration 1.unity
+  artifactKey: Guid(8d062f7120c2c0a46b9a66cacdfbd6af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/0. VR Camera and Controller Configuration 1.unity using Guid(8d062f7120c2c0a46b9a66cacdfbd6af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '37176228a5873d56e8917d6c8c8c37a7') in 0.000710 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 21.375181 seconds.
+  path: Assets/Scenes/1. Implement Teleportation Locomotion.unity
+  artifactKey: Guid(8d062f7120c2c0a46b9a66cacdfbd6af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/1. Implement Teleportation Locomotion.unity using Guid(8d062f7120c2c0a46b9a66cacdfbd6af) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '60c1d5cddff5053b7a0c99a40f3719a7') in 0.000836 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
