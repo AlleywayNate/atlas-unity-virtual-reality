@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 1007
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Inspector
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 102
+  controlID: 44
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -321,7 +321,7 @@ MonoBehaviour:
     m_CachedPref: 179
     m_ControlHash: 1412526313
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: -1
+  m_LastInspectedObjectInstanceID: 29288
   m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
@@ -369,7 +369,7 @@ MonoBehaviour:
     m_CachedPref: 179
     m_ControlHash: 1412526313
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: -1
+  m_LastInspectedObjectInstanceID: 29288
   m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
@@ -417,7 +417,7 @@ MonoBehaviour:
     m_CachedPref: 179
     m_ControlHash: 1412526313
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: -1
+  m_LastInspectedObjectInstanceID: 29288
   m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
@@ -505,7 +505,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Settings
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -513,15 +513,15 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets
+  - Assets/Settings
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Nathen Williams\Desktop\Unity Projects\atlas-unity-virtual-reality\intro-to-vr
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 92760000
-    m_LastClickedID: 30354
+    m_SelectedIDs: ba760000
+    m_LastClickedID: 30394
     m_ExpandedIDs: 00000000927600009476000096760000987600009a7600009c760000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -577,7 +577,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -692,9 +692,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 68720000
+      m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 26fbffff
+      m_ExpandedIDs: 1a98ffff3499ffff3c9dffff26fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1125,7 +1125,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.026889246, y: 0.17364714, z: -0.0047438573, w: -0.98442465}
     speed: 2
-    m_Value: {x: -0.026889246, y: 0.17364714, z: -0.004743857, w: -0.9844246}
+    m_Value: {x: -0.02688937, y: 0.17364794, z: -0.004743879, w: -0.98442924}
   m_Size:
     m_Target: 0.73175675
     speed: 2
