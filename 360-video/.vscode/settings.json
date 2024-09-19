@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "360-video.sln"
+    "dotnet.defaultSolution": "360-Video.sln"
 }

@@ -191,3 +191,6 @@ ExportedObj/
 
 # added througn git desktop #
 /VR Setup with package manager
+/360-Video/Assets
+/360-video
+*.mp4
