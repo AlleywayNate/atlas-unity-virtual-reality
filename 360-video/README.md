@@ -1,7 +1,3 @@
-Here's a more detailed and polished README file for your 360 Video Viewer project. This version includes sections for an overview, features, setup instructions, usage, testing results, and more.
-
----
-
 # 360 Video Viewer
 
 ## Project Overview
@@ -86,7 +82,3 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 ## Contact
 
 For further inquiries or support, please contact [your-email@example.com].
-
----
-
-Feel free to modify or expand upon this README to fit the specific details of your project or any additional features you might have implemented.
