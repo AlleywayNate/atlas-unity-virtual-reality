@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class GazeInteractable : MonoBehaviour
 {
     public float gazeDuration = 2f; // Default gaze time to select
@@ -11,12 +12,30 @@ public class GazeInteractable : MonoBehaviour
 
     public Image gazeIndicator; // Optional: A UI indicator to show gaze progress
 
+    // Audio Feedback
+    private bool hasStartedGazing = false;
+
+    // Haptic Feedback
+    private XRNode controllerNode = XRNode.RightHand; // Change if needed
+
     void Update()
     {
         if (isGazing)
         {
             timer += Time.deltaTime;
-            gazeIndicator.fillAmount = timer / gazeDuration; // Update progress indicator
+            if (gazeIndicator != null)
+            {
+                gazeIndicator.fillAmount = timer / gazeDuration; // Update progress indicator
+            }
+
+            // Play duration audio once when gazing starts
+            if (!hasStartedGazing)
+            {
+                AudioManager.Instance.PlayStartSelect();
+                AudioManager.Instance.PlaySelectDuration(); // Consider making this loop if needed
+                TriggerHapticFeedback(0.5f, 0.1f); // Medium amplitude, short duration
+                hasStartedGazing = true;
+            }
 
             if (timer >= gazeDuration)
             {
@@ -31,6 +50,7 @@ public class GazeInteractable : MonoBehaviour
     {
         isGazing = true;
         timer = 0f;
+        hasStartedGazing = false;
     }
 
     public void StopGazing()
@@ -42,7 +62,11 @@ public class GazeInteractable : MonoBehaviour
     private void ResetGaze()
     {
         timer = 0f;
-        gazeIndicator.fillAmount = 0f; // Reset progress indicator
+        hasStartedGazing = false;
+        if (gazeIndicator != null)
+        {
+            gazeIndicator.fillAmount = 0f; // Reset progress indicator
+        }
     }
 
     private void OnGazeComplete()
@@ -52,6 +76,31 @@ public class GazeInteractable : MonoBehaviour
         if (button != null)
         {
             button.onClick.Invoke(); // Call the button’s onClick event
+            AudioManager.Instance.PlayFinishSelect();
+            TriggerHapticFeedback(1f, 0.2f); // Strong amplitude, longer duration
         }
     }
+
+    private void TriggerHapticFeedback(float amplitude, float duration)
+    {
+        // Get the input device for the specified controller node
+        InputDevice device = InputDevices.GetDeviceAtXRNode(controllerNode);
+
+        if (device.isValid)
+        {
+            // Send haptic impulse
+            HapticCapabilities capabilities;
+            if (device.TryGetHapticCapabilities(out capabilities))
+            {
+                if (capabilities.supportsImpulse)
+                {
+                    uint channel = 0;
+                    device.SendHapticImpulse(channel, amplitude, duration);
+                }
+            }
+        }
+    }
+
+    // Optional: For describing UI elements
+    public string description;
 }
