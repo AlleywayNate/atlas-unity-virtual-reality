@@ -7,6 +7,9 @@
         public XRController controller; // Reference to the XR Controller (e.g., LeftHand or RightHand)
         public InputHelpers.Button activationButton = InputHelpers.Button.PrimaryTrigger; // Button to toggle magnifier
         public float activationThreshold = 0.1f; // Threshold for button press
+        public AudioClip activationSound;
+        public AudioClip deactivationSound;
+        private AudioSource audioSource;
 
         private bool isMagnifierActive = false;
         private bool wasPressedLastFrame = false;
@@ -17,6 +20,8 @@
             {
                 magnifyingGlass.SetActive(false); // Initially inactive
             }
+
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
 
         void Update()
@@ -38,5 +43,14 @@
         {
             isMagnifierActive = !isMagnifierActive;
             magnifyingGlass.SetActive(isMagnifierActive);
+
+            if (isMagnifierActive && activationSound != null)
+            {
+                audioSource.PlayOneShot(activationSound);
+            }
+            else if (!isMagnifierActive && deactivationSound != null)
+            {
+                audioSource.PlayOneShot(deactivationSound);
+            }
         }
     }
