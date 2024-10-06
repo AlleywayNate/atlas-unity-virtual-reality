@@ -1,5 +1,5 @@
-using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
+    using UnityEngine;
+    using UnityEngine.XR.Interaction.Toolkit;
 
     public class MagnifyingGlassController : MonoBehaviour
     {
@@ -9,6 +9,7 @@ using UnityEngine.XR.Interaction.Toolkit;
         public float activationThreshold = 0.1f; // Threshold for button press
 
         private bool isMagnifierActive = false;
+        private bool wasPressedLastFrame = false;
 
         void Start()
         {
@@ -23,10 +24,13 @@ using UnityEngine.XR.Interaction.Toolkit;
             if (controller)
             {
                 InputHelpers.IsPressed(controller.inputDevice, activationButton, out bool isPressed, activationThreshold);
-                if (isPressed)
+
+                if (isPressed && !wasPressedLastFrame)
                 {
                     ToggleMagnifier();
                 }
+
+                wasPressedLastFrame = isPressed;
             }
         }
 
