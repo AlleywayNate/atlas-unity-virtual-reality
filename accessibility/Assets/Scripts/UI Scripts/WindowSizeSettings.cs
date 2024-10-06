@@ -10,9 +10,16 @@ public class WindowSizeSettings : MonoBehaviour
 
     void Start()
     {
-        // Initialize sliders with current scale
-        horizontalScaleSlider.value = uiWindow.localScale.x;
-        verticalScaleSlider.value = uiWindow.localScale.y;
+        // Load saved scale or default to 1
+        float savedHorizontalScale = PlayerPrefs.GetFloat("UIHorizontalScale", 1.0f);
+        float savedVerticalScale = PlayerPrefs.GetFloat("UIVerticalScale", 1.0f);
+
+        horizontalScaleSlider.value = savedHorizontalScale;
+        verticalScaleSlider.value = savedVerticalScale;
+
+        // Apply initial scale
+        SetHorizontalScale(savedHorizontalScale);
+        SetVerticalScale(savedVerticalScale);
 
         // Add listeners
         horizontalScaleSlider.onValueChanged.AddListener(SetHorizontalScale);
@@ -24,6 +31,9 @@ public class WindowSizeSettings : MonoBehaviour
         Vector3 currentScale = uiWindow.localScale;
         currentScale.x = scale;
         uiWindow.localScale = currentScale;
+
+        // Save the setting
+        PlayerPrefs.SetFloat("UIHorizontalScale", scale);
     }
 
     public void SetVerticalScale(float scale)
@@ -31,5 +41,8 @@ public class WindowSizeSettings : MonoBehaviour
         Vector3 currentScale = uiWindow.localScale;
         currentScale.y = scale;
         uiWindow.localScale = currentScale;
+
+        // Save the setting
+        PlayerPrefs.SetFloat("UIVerticalScale", scale);
     }
 }

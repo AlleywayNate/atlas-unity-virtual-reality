@@ -40,7 +40,7 @@ public class ColorBlindnessSettings : MonoBehaviour
             }
         }
 
-        // Initialize dropdown based on saved settings
+        // Load saved color blindness mode or default to 'Default'
         string savedMode = PlayerPrefs.GetString("ColorBlindnessMode", "Default");
         int savedIndex = colorPalettes.FindIndex(p => p.modeName == savedMode);
         colorBlindnessDropdown.value = savedIndex != -1 ? savedIndex : 0;

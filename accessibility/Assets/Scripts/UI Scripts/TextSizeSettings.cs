@@ -1,22 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class TextSizeSettings : MonoBehaviour
 {
     public Slider textSizeSlider;
-    public List<Text> uiTexts; // List of all Text components to scale
-
-    // Alternatively, if using TextMeshPro
-    // public List<TMPro.TextMeshProUGUI> uiTexts;
+    public RectTransform uiWindow; // Reference to the UI window RectTransform
+    private List<Text> uiTexts = new List<Text>();
 
     void Start()
     {
-        // Initialize slider with current text size
-        if (uiTexts.Count > 0)
-        {
-            textSizeSlider.value = uiTexts[0].fontSize;
-        }
+        // Find all Text components within the UI window
+        uiTexts.AddRange(uiWindow.GetComponentsInChildren<Text>(true));
+
+        // Load saved text size or default to 18
+        float savedTextSize = PlayerPrefs.GetFloat("UITextSize", 18f);
+        textSizeSlider.value = savedTextSize;
+
+        // Apply initial text size
+        SetTextSize(savedTextSize);
 
         // Add listener
         textSizeSlider.onValueChanged.AddListener(SetTextSize);
@@ -29,10 +31,7 @@ public class TextSizeSettings : MonoBehaviour
             txt.fontSize = Mathf.RoundToInt(size);
         }
 
-        // If using TextMeshPro:
-        // foreach (var txt in uiTexts)
-        // {
-        //     txt.fontSize = size;
-        // }
+        // Save the setting
+        PlayerPrefs.SetFloat("UITextSize", size);
     }
 }
