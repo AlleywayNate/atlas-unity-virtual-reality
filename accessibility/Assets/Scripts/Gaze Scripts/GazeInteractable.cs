@@ -18,6 +18,19 @@ public class GazeInteractable : MonoBehaviour
     // Haptic Feedback
     private XRNode controllerNode = XRNode.RightHand; // Change if needed
 
+    // Description for TTS
+    public string description;
+
+    // TTS Manager
+    private TTSManager ttsManager;
+
+    void Start()
+    {
+        #if UNITY_STANDALONE_WIN
+        ttsManager = FindObjectOfType<TTSManager>();
+        #endif
+    }
+
     void Update()
     {
         if (isGazing)
@@ -34,6 +47,12 @@ public class GazeInteractable : MonoBehaviour
                 AudioManager.Instance.PlayStartSelect();
                 AudioManager.Instance.PlaySelectDuration(); // Consider making this loop if needed
                 TriggerHapticFeedback(0.5f, 0.1f); // Medium amplitude, short duration
+                #if UNITY_STANDALONE_WIN
+                if (!string.IsNullOrEmpty(description))
+                {
+                    ttsManager.Speak(description);
+                }
+                #endif
                 hasStartedGazing = true;
             }
 
@@ -102,5 +121,5 @@ public class GazeInteractable : MonoBehaviour
     }
 
     // Optional: For describing UI elements
-    public string description;
+    // public string description; // Assigned via Inspector
 }
