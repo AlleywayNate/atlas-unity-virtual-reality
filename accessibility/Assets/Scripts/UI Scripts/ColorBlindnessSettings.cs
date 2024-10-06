@@ -5,11 +5,8 @@ using System.Collections.Generic;
 public class ColorBlindnessSettings : MonoBehaviour
 {
     public Dropdown colorBlindnessDropdown;
-    public List<Image> uiImages; // UI Images to change color (e.g., backgrounds, buttons)
-    public List<Text> uiTexts; // UI Texts to change color
-    public RectTransform uiWindow; // Reference to the UI window
+    public RectTransform uiWindow; // Reference to the UI window RectTransform
 
-    // Define color palettes
     [System.Serializable]
     public struct ColorPalette
     {
@@ -24,8 +21,15 @@ public class ColorBlindnessSettings : MonoBehaviour
 
     public List<ColorPalette> colorPalettes;
 
+    private List<Image> uiImages = new List<Image>();
+    private List<Text> uiTexts = new List<Text>();
+
     void Start()
     {
+        // Find all Image and Text components within the UI window
+        uiImages.AddRange(uiWindow.GetComponentsInChildren<Image>(true));
+        uiTexts.AddRange(uiWindow.GetComponentsInChildren<Text>(true));
+
         // Populate dropdown options if not set
         if (colorBlindnessDropdown.options.Count == 0)
         {
@@ -38,8 +42,8 @@ public class ColorBlindnessSettings : MonoBehaviour
 
         // Initialize dropdown based on saved settings
         string savedMode = PlayerPrefs.GetString("ColorBlindnessMode", "Default");
-        colorBlindnessDropdown.value = colorPalettes.FindIndex(p => p.modeName == savedMode);
-        if (colorBlindnessDropdown.value == -1) colorBlindnessDropdown.value = 0; // Default to first option
+        int savedIndex = colorPalettes.FindIndex(p => p.modeName == savedMode);
+        colorBlindnessDropdown.value = savedIndex != -1 ? savedIndex : 0;
 
         // Add listener
         colorBlindnessDropdown.onValueChanged.AddListener(SetColorBlindnessMode);
@@ -57,16 +61,13 @@ public class ColorBlindnessSettings : MonoBehaviour
 
         foreach (Image img in uiImages)
         {
-            // Example: Assume the first image is background
             if (img.name.ToLower().Contains("background"))
             {
                 img.color = selectedPalette.backgroundColor;
             }
             else if (img.GetComponent<Button>() != null)
             {
-                // Assign different button colors based on index or order
-                // Example: Alternate button colors
-                Button btn = img.GetComponent<Button>();
+                // Assign button colors in a cyclical manner
                 int btnIndex = uiImages.IndexOf(img);
                 switch (btnIndex % 3)
                 {
@@ -83,7 +84,7 @@ public class ColorBlindnessSettings : MonoBehaviour
             }
             else
             {
-                img.color = selectedPalette.backgroundColor; // Default to background color
+                img.color = selectedPalette.backgroundColor; // Default
             }
         }
 
