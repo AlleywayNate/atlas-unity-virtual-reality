@@ -5,7 +5,7 @@
     {
         public GameObject magnifyingGlass; // Reference to the magnifying glass GameObject
         public XRController controller; // Reference to the XR Controller (e.g., LeftHand or RightHand)
-        public InputHelpers.Button activationButton = InputHelpers.Button.PrimaryTrigger; // Button to toggle magnifier
+        public InputHelpers.Button activationButton = InputHelpers.Button.Trigger; // Button to toggle magnifier
         public float activationThreshold = 0.1f; // Threshold for button press
         public AudioClip activationSound;
         public AudioClip deactivationSound;

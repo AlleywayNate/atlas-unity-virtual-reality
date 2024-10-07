@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.XR;
 
 public class GazeInteractable : MonoBehaviour
 {
@@ -26,6 +26,7 @@ public class GazeInteractable : MonoBehaviour
 
     void Start()
     {
+        // Enable TTS only on Windows platform
         // #if UNITY_STANDALONE_WIN
         // ttsManager = FindObjectOfType<TTSManager>();
         // #endif
@@ -47,22 +48,27 @@ public class GazeInteractable : MonoBehaviour
                 AudioManager.Instance.PlayStartSelect();
                 AudioManager.Instance.PlaySelectDuration(); // Consider making this loop if needed
                 TriggerHapticFeedback(0.5f, 0.1f); // Medium amplitude, short duration
+                
+                // If a description clip is provided, play it
                 if (descriptionClip != null)
                 {
-                    AudioManager.Instance.PlayOneShot(descriptionClip);
+                    AudioManager.Instance.PlayOneShot(descriptionClip); // Ensure PlayOneShot exists in AudioManager
                 }
+
+                // Text-to-Speech fallback (if no audio description)
                 // #if UNITY_STANDALONE_WIN
                 // if (descriptionClip == null && !string.IsNullOrEmpty(description))
                 // {
                 //     ttsManager.Speak(description);
                 // }
                 // #endif
+
                 hasStartedGazing = true;
             }
 
             if (timer >= gazeDuration)
             {
-                // Perform the selection
+                // Perform the selection when the gaze completes
                 OnGazeComplete();
                 ResetGaze();
             }
@@ -99,7 +105,7 @@ public class GazeInteractable : MonoBehaviour
         if (button != null)
         {
             button.onClick.Invoke(); // Call the button’s onClick event
-            AudioManager.Instance.PlayFinishSelect();
+            AudioManager.Instance.PlayFinishSelect(); // Ensure PlayFinishSelect exists in AudioManager
             TriggerHapticFeedback(1f, 0.2f); // Strong amplitude, longer duration
         }
     }
@@ -111,7 +117,7 @@ public class GazeInteractable : MonoBehaviour
 
         if (device.isValid)
         {
-            // Send haptic impulse
+            // Send haptic impulse if the controller supports it
             HapticCapabilities capabilities;
             if (device.TryGetHapticCapabilities(out capabilities))
             {
@@ -124,66 +130,6 @@ public class GazeInteractable : MonoBehaviour
         }
     }
 
-    // Optional: For describing UI elements
+    // Optional: For describing UI elements via text
     // public string description; // Assigned via Inspector
-    {
-
-        public void StartGazing()
-        {
-            isGazing = true;
-            timer = 0f;
-            hasStartedGazing = false;
-        }
-
-        public void StopGazing()
-        {
-            isGazing = false;
-            ResetGaze();
-        }
-
-        private void ResetGaze()
-        {
-            timer = 0f;
-            hasStartedGazing = false;
-            if (gazeIndicator != null)
-            {
-                gazeIndicator.fillAmount = 0f; // Reset progress indicator
-            }
-        }
-
-        private void OnGazeComplete()
-        {
-            // Execute the button’s action here
-            Button button = GetComponent<Button>();
-            if (button != null)
-            {
-                button.onClick.Invoke(); // Call the button’s onClick event
-                AudioManager.Instance.PlayFinishSelect();
-                TriggerHapticFeedback(1f, 0.2f); // Strong amplitude, longer duration
-            }
-        }
-
-        private void TriggerHapticFeedback(float amplitude, float duration)
-        {
-            // Get the input device for the specified controller node
-            InputDevice device = InputDevices.GetDeviceAtXRNode(controllerNode);
-
-            if (device.isValid)
-            {
-                // Send haptic impulse
-                HapticCapabilities capabilities;
-                if (device.TryGetHapticCapabilities(out capabilities))
-                {
-                    if (capabilities.supportsImpulse)
-                    {
-                        uint channel = 0;
-                        device.SendHapticImpulse(channel, amplitude, duration);
-                    }
-                }
-            }
-        }
-
-        // Optional: For describing UI elements
-        // public string description; // Assigned via Inspector
-    }
 }

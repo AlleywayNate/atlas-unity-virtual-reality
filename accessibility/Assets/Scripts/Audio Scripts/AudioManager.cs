@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,4 +48,9 @@ public class AudioManager : MonoBehaviour
        {
            audioSource.PlayOneShot(gazeHintClip);
        }
-   }
+
+    internal void PlayOneShot(AudioClip descriptionClip)
+    {
+        throw new NotImplementedException();
+    }
+}
