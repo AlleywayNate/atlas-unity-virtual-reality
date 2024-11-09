@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,221 +7,234 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // public Game Objects
     [Header("Targets")]
     public GameObject targetPrefab;
-    public int targetsNum = 5;
-    public int ammo = 7;
+    public int targetCount = 5;
+    public int maxAmmo = 7;
 
-    [Header("UI Canvas Objects")]
-    public GameObject planeSearchingCanvas;
-    public GameObject selectPlaneCanvas;
+    [Header("UI Elements")]
+    public GameObject planeSearchingUI;
+    public GameObject planeSelectionUI;
     public GameObject startButton;
     public GameObject gameUI;
-    public Text scoreTxt;
+    public Text scoreText;
     public GameObject ammoImagePrefab;
-    public GameObject ammoImageGrid;
+    public GameObject ammoContainer;
     public GameObject playAgainButton;
-    public GameObject leaderBoardButton;
-    public GameObject leaderBoardUI;
+    public GameObject leaderboardButton;
+    public GameObject leaderboardUI;
 
-    [Header("Sounds")]
-    public AudioSource EndingSound;
+    [Header("Audio")]
+    public AudioSource endGameSound;
     public AudioSource planeSelectedSound;
 
-    [Header("Scripts")]
-    public Leaderboard leaderBoard;
+    [Header("Other References")]
+    public Leaderboard leaderboard;
+    public Material planeOcclusionMaterial;
 
-    [Header("Materials")]
-    public Material PlaneOcclusionMaterial;
+    private int score = 0;
+    private ARPlane selectedPlane = null;    
+    private ARRaycastManager raycastManager;
+    private ARPlaneManager planeManager;
+    private SlingShot slingShot;
+    private List<ARRaycastHit> raycastHits = new List<ARRaycastHit>();
+    private Dictionary<int, GameObject> activeTargets = new Dictionary<int, GameObject>();
 
-    // private variables
-    int totalPoints = 0;
+    public event System.Action<ARPlane> PlaneSelected;
 
-    // private GameObjects
-    ARPlane selectedPlane = null;    
-    ARRaycastManager raycastManager;
-    ARPlaneManager planeManager;
-    SlingShot slingShot;
-    ARSession session;
-
-    List<ARRaycastHit> hits = new List<ARRaycastHit>();
-    Dictionary<int, GameObject> targets = new Dictionary<int, GameObject>();
-
-    //Events
-    public delegate void PlaneSelectedEventHandler(ARPlane thePlane);
-    public event PlaneSelectedEventHandler OnPlaneSelected;
-    void Awake()
+    private void Awake()
     {
-        session = FindObjectOfType<ARSession>();
-        session.Reset();
-    }    
-    
-    // Start is called before the first frame update
-    void Start()
+        FindObjectOfType<ARSession>().Reset();
+    }
+
+    private void Start()
     {
         raycastManager = FindObjectOfType<ARRaycastManager>();
         planeManager = FindObjectOfType<ARPlaneManager>();
         slingShot = FindObjectOfType<SlingShot>();
-        
-        planeManager.planesChanged += PlanesFound;
-        OnPlaneSelected += PlaneSelected;
+
+        planeManager.planesChanged += UpdatePlaneUIOnDetection;
+        PlaneSelected += SetupTargetsOnPlaneSelection;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.touchCount > 0 && selectedPlane == null && planeManager.trackables.count > 0)
         {
-            SelectPlane();
+            HandlePlaneSelection();
         }
     }
-    private void SelectPlane()
+
+    private void HandlePlaneSelection()
     {
         Touch touch = Input.GetTouch(0);
         
-
-        if (touch.phase == TouchPhase.Began)
+        if (touch.phase == TouchPhase.Began && raycastManager.Raycast(touch.position, raycastHits, TrackableType.PlaneWithinPolygon))
         {
-            if (raycastManager.Raycast(touch.position, hits, TrackableType.PlaneWithinPolygon))
-            {
-                ARRaycastHit hit = hits[0];
-                selectedPlane =  planeManager.GetPlane(hit.trackableId);                
-                selectedPlane.GetComponent<LineRenderer>().positionCount = 0;
-
-                selectedPlane.GetComponent<Renderer>().material = PlaneOcclusionMaterial;
-                // SetMaterialTransparent(selectedPlane);
-                
-                foreach(ARPlane plane in planeManager.trackables)
-                {
-                    if (plane != selectedPlane)
-                    {
-                        plane.gameObject.SetActive(false);
-                    }
-                }
-                planeManager.enabled = false;
-                selectPlaneCanvas.SetActive(false);
-                OnPlaneSelected?.Invoke(selectedPlane);
-            }
+            ARRaycastHit hit = raycastHits[0];
+            selectedPlane = planeManager.GetPlane(hit.trackableId);
+            PrepareSelectedPlane(selectedPlane);
+            PlaneSelected?.Invoke(selectedPlane);
         }
     }
 
-    void SetMaterialTransparent(ARPlane plane)
-    {        
-        foreach (Material material in plane.GetComponent<Renderer>().materials)
-        {
-            material.SetFloat("_Mode", 2);
-            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            material.SetInt("_ZWrite", 0);
-            material.DisableKeyword("_ALPHATEST_ON");
-            material.DisableKeyword("_ALPHABLEND_ON");
-            // material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            material.renderQueue = 3000;
-        }
+    private void PrepareSelectedPlane(ARPlane plane)
+    {
+        plane.GetComponent<Renderer>().material = planeOcclusionMaterial;
+        HideOtherPlanes(plane);
+        planeSelectionUI.SetActive(false);
+        planeSelectedSound.Play();
     }
-    void PlanesFound(ARPlanesChangedEventArgs args)
+
+    private void HideOtherPlanes(ARPlane selected)
+    {
+        foreach (ARPlane plane in planeManager.trackables)
+        {
+            if (plane != selected)
+                plane.gameObject.SetActive(false);
+        }
+        planeManager.enabled = false;
+    }
+
+    private void UpdatePlaneUIOnDetection(ARPlanesChangedEventArgs args)
     {
         if (selectedPlane == null && planeManager.trackables.count > 0)
         {
-            planeSearchingCanvas.SetActive(false);
-            selectPlaneCanvas.SetActive(true);
-            planeManager.planesChanged -= PlanesFound;
+            planeSearchingUI.SetActive(false);
+            planeSelectionUI.SetActive(true);
+            planeManager.planesChanged -= UpdatePlaneUIOnDetection;
         }
     }
 
-    void PlaneSelected(ARPlane plane)
+    private void SetupTargetsOnPlaneSelection(ARPlane plane)
     {
-        planeSelectedSound.Play();
-        foreach (KeyValuePair<int, GameObject> target in targets)
-        {
-            Destroy(target.Value);
-        }
-        targets.Clear();
+        ClearExistingTargets();
+        ShowStartButton();
 
-        startButton.SetActive(true);
-        for (int i = 1; i <= targetsNum; i++)
+        for (int i = 1; i <= targetCount; i++)
         {
             GameObject target = Instantiate(targetPrefab, plane.center, plane.transform.rotation, plane.transform);
-            target.GetComponent<MoveRandomly>().StartMoving(plane);
-            target.GetComponent<Target>().ID = i;
-            target.GetComponent<Target>().OnTargetDestroy += UpdateGameWhenHitTarget;
-            targets.Add(i, target);
+            SetupTarget(target, i, plane);
+            activeTargets.Add(i, target);
         }
     }
 
-    void UpdateGameWhenHitTarget(int id, int points)
+    private void SetupTarget(GameObject target, int id, ARPlane plane)
     {
-        targets.Remove(id);
-        totalPoints += points;
-        scoreTxt.text = totalPoints.ToString();
-        if (targets.Count == 0)
+        target.GetComponent<MoveRandomly>().StartMoving(plane);
+        var targetComponent = target.GetComponent<Target>();
+        targetComponent.ID = id;
+        targetComponent.OnTargetDestroy += HandleTargetHit;
+    }
+
+    private void HandleTargetHit(int id, int points)
+    {
+        activeTargets.Remove(id);
+        UpdateScore(points);
+        if (activeTargets.Count == 0)
         {
-            ShowPlayAgainButton();
+            EndGame();
         }
     }
+
+    private void UpdateScore(int points)
+    {
+        score += points;
+        scoreText.text = score.ToString();
+    }
+
     public void StartGame()
     {
-        slingShot.AmmoLeft = ammo;
-        slingShot.OnReload += SlingShootReload;
-        slingShot.Reload();
-        totalPoints = 0;
-        scoreTxt.text = totalPoints.ToString();
+        InitializeGameUI();
+        ResetAmmo();
+    }
+
+    private void InitializeGameUI()
+    {
+        score = 0;
+        scoreText.text = score.ToString();
         startButton.SetActive(false);
         gameUI.SetActive(true);
+    }
 
-        
+    private void ResetAmmo()
+    {
+        slingShot.AmmoLeft = maxAmmo;
+        slingShot.OnReload += ReloadAmmoUI;
+        slingShot.Reload();
 
-        for (int i = 0; i < slingShot.AmmoLeft; i++)
+        for (int i = 0; i < maxAmmo; i++)
         {
-            GameObject ammoGO = Instantiate(ammoImagePrefab);
-            ammoGO.transform.SetParent(ammoImageGrid.transform, false);
+            GameObject ammoImage = Instantiate(ammoImagePrefab, ammoContainer.transform);
         }
     }
-    void SlingShootReload(int ammoLeft)
+
+    private void ReloadAmmoUI(int ammoLeft)
     {
-        if (ammoImageGrid.transform.childCount > 0 && ammoLeft >= 0)
+        if (ammoContainer.transform.childCount > 0 && ammoLeft >= 0)
         {
-            Destroy(ammoImageGrid.transform.GetChild(0).gameObject);
+            Destroy(ammoContainer.transform.GetChild(0).gameObject);
         }
         else if (ammoLeft == 0)
         {
-            ShowPlayAgainButton();            
-            ShowLeaderBoard();
+            EndGame();
+            DisplayLeaderboard();
         }
     }
-    public void ShowPlayAgainButton()
+
+    private void EndGame()
     {
-        EndingSound.Play();
-        // gameUI.SetActive(false);
-        leaderBoard.SetLeader(totalPoints);
-        foreach (Transform ammoImge in ammoImageGrid.transform)
-        {
-            Destroy(ammoImge.gameObject);
-        }
+        endGameSound.Play();
+        leaderboard.SetLeader(score);
+        ClearAmmoUI();
         slingShot.Clear();
-        slingShot.OnReload -= SlingShootReload;
+        slingShot.OnReload -= ReloadAmmoUI;
         playAgainButton.SetActive(true);
-        leaderBoardButton.SetActive(true);
+        leaderboardButton.SetActive(true);
     }
-    public void ShowLeaderBoard()
+
+    private void ClearAmmoUI()
     {
-        leaderBoard.PrintLeaderBoard();
-        leaderBoardUI.SetActive(true);
+        foreach (Transform ammo in ammoContainer.transform)
+        {
+            Destroy(ammo.gameObject);
+        }
     }
 
     public void PlayAgain()
     {
-        leaderBoardButton.SetActive(false);
-        PlaneSelected(selectedPlane);
-        EndingSound.Stop();
+        leaderboardButton.SetActive(false);
+        SetupTargetsOnPlaneSelection(selectedPlane);
+        endGameSound.Stop();
     }
+
     public void QuitGame()
     {
         Application.Quit();
     }
+
     public void RestartGame()
     {
         SceneManager.LoadScene("ARSlingshotGame");
+    }
+
+    private void ClearExistingTargets()
+    {
+        foreach (var target in activeTargets.Values)
+        {
+            Destroy(target);
+        }
+        activeTargets.Clear();
+    }
+
+    private void ShowStartButton()
+    {
+        startButton.SetActive(true);
+    }
+
+    public void DisplayLeaderboard()
+    {
+        leaderboard.PrintLeaderBoard();
+        leaderboardUI.SetActive(true);
     }
 }
