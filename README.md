@@ -64,7 +64,12 @@ This repository contains a collection of assignments and projects completed as p
 ## Contributions
 
 Contributions and feedback are welcome! Feel free to fork the repository, open issues, or submit pull requests to improve these projects.
-
+Website
+https://nathenwilliams600.wixsite.com/nategamedev
+LinkedIn
+[in/nathenwilliams](https://www.linkedin.com/in/nathenwilliams/)
+Artstation
+https://www.artstation.com/happilytwisted
 ## License
 
 This repository is licensed under the MIT License. See the LICENSE file for more details.
